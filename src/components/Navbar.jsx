@@ -13,17 +13,16 @@ const Navbar = () => {
   return (
     <nav className="navbar">
       <div className="navbar-container">
-        {/* Logo */}
+       
         <Link to="/" className="navbar-logo">
           <span>CineVerse</span>
         </Link>
 
-        {/* Hamburger Menu Icon */}
+        
         <div className="menu-icon" onClick={toggleMenu}>
           {isOpen ? <FaTimes /> : <FaBars />}
         </div>
 
-        {/* Navigation Links */}
         <ul className={isOpen ? 'nav-menu active' : 'nav-menu'}>
           <li className="nav-item">
             <Link to="/" className="nav-link" onClick={() => setIsOpen(false)}>
@@ -47,7 +46,7 @@ const Navbar = () => {
           </li>
         </ul>
 
-        {/* Auth Buttons */}
+       
         <div className="auth-buttons">
           <Link to="/login" className="btn btn-login">
             Login

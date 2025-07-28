@@ -1,98 +1,64 @@
 import { useState, useEffect } from 'react';
 import { tmdbApi } from '../services/tmdbApi';
 
-export const useMovies = (endpoint, params = {}) => {
-  const [movies, setMovies] = useState([]);
+export function useMovies() {
+  const [trending, setTrending] = useState([]);
+  const [popular, setPopular] = useState([]);
+  const [topRated, setTopRated] = useState([]);
+  const [upcoming, setUpcoming] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    let isMounted = true;
-
     const fetchMovies = async () => {
       try {
         setLoading(true);
-        setError(null);
+        const [trendingData, popularData, topRatedData, upcomingData] = await Promise.all([
+          tmdbApi.getTrendingMovies(),
+          tmdbApi.getPopularMovies(),
+          tmdbApi.getTopRatedMovies(),
+          tmdbApi.getUpcomingMovies()
+        ]);
 
-        // Get the appropriate API method based on the endpoint
-        const apiMethod = tmdbApi[endpoint];
-        if (!apiMethod) {
-          throw new Error(`Invalid endpoint: ${endpoint}`);
-        }
-
-        const data = await apiMethod(params.page || 1);
-
-        if (isMounted) {
-          setMovies(data.results || []);
-        }
+        setTrending(trendingData.results || []);
+        setPopular(popularData.results || []);
+        setTopRated(topRatedData.results || []);
+        setUpcoming(upcomingData.results || []);
       } catch (err) {
-        if (isMounted) {
-          console.error('Error fetching movies:', err);
-          setError(err.message);
-        }
+        setError(err.message);
       } finally {
-        if (isMounted) {
-          setLoading(false);
-        }
+        setLoading(false);
       }
     };
 
     fetchMovies();
+  }, []);
 
-    return () => {
-      isMounted = false;
-    };
-  }, [endpoint, params.page]);
+  return { trending, popular, topRated, upcoming, loading, error };
+}
 
-  return { movies, loading, error };
-};
-
-export const useMovieDetails = (movieId) => {
+export function useMovieDetails(id) {
   const [movie, setMovie] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    let isMounted = true;
-
     const fetchMovieDetails = async () => {
-      if (!movieId) return;
+      if (!id) return;
 
       try {
         setLoading(true);
-        setError(null);
-
-        const [details, credits, videos] = await Promise.all([
-          tmdbApi.getMovieDetails(movieId),
-          tmdbApi.getMovieCredits(movieId),
-          tmdbApi.getMovieVideos(movieId),
-        ]);
-
-        if (isMounted) {
-          setMovie({
-            ...details,
-            credits,
-            videos: videos.results,
-          });
-        }
+        const movieData = await tmdbApi.getMovieDetails(id);
+        setMovie(movieData);
       } catch (err) {
-        if (isMounted) {
-          console.error('Error fetching movie details:', err);
-          setError(err.message);
-        }
+        setError(err.message);
       } finally {
-        if (isMounted) {
-          setLoading(false);
-        }
+        setLoading(false);
       }
     };
 
     fetchMovieDetails();
-
-    return () => {
-      isMounted = false;
-    };
-  }, [movieId]);
+  }, [id]);
 
   return { movie, loading, error };
-}; 
+} 

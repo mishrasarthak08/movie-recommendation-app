@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { tmdbApi } from '../services/tmdbApi';
 import './SearchBar.css';
@@ -6,47 +6,11 @@ import './SearchBar.css';
 const SearchBar = () => {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
   const [showResults, setShowResults] = useState(false);
-  const searchRef = useRef(null);
-  const debounceTimerRef = useRef(null);
   const navigate = useNavigate();
+  const searchRef = useRef(null);
 
-  // Debounced search function
-  const debouncedSearch = useCallback(async (searchQuery) => {
-    if (searchQuery.trim().length < 2) {
-      setResults([]);
-      return;
-    }
-
-    setIsLoading(true);
-    try {
-      const response = await tmdbApi.searchMovies(searchQuery);
-      setResults(response.results.slice(0, 5));
-    } catch (error) {
-      console.error('Search error:', error);
-      setResults([]);
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
-
-  // Handle input change with debouncing
-  const handleInputChange = (e) => {
-    const value = e.target.value;
-    setQuery(value);
-    setShowResults(true);
-
-    if (debounceTimerRef.current) {
-      clearTimeout(debounceTimerRef.current);
-    }
-
-    debounceTimerRef.current = setTimeout(() => {
-      debouncedSearch(value);
-    }, 300);
-  };
-
-  // Click outside handler
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (searchRef.current && !searchRef.current.contains(event.target)) {
@@ -57,16 +21,39 @@ const SearchBar = () => {
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
-      if (debounceTimerRef.current) {
-        clearTimeout(debounceTimerRef.current);
-      }
     };
   }, []);
 
-  const handleMovieClick = (movieId) => {
-    setShowResults(false);
-    setQuery('');
+  const handleSearch = async (searchQuery) => {
+    if (searchQuery.trim()) {
+      setIsSearching(true);
+      try {
+        const data = await tmdbApi.searchMovies(searchQuery);
+        setResults(data.results ? data.results.slice(0, 5) : []);
+        setShowResults(true);
+      } catch (error) {
+        console.error('Search error:', error);
+        setResults([]);
+      } finally {
+        setIsSearching(false);
+      }
+    } else {
+      setResults([]);
+      setShowResults(false);
+    }
+  };
+
+  const handleInputChange = (e) => {
+    const value = e.target.value;
+    setQuery(value);
+    handleSearch(value);
+  };
+
+  const handleResultClick = (movieId) => {
     navigate(`/movie/${movieId}`);
+    setQuery('');
+    setResults([]);
+    setShowResults(false);
   };
 
   return (
@@ -77,34 +64,24 @@ const SearchBar = () => {
           placeholder="Search for movies..."
           value={query}
           onChange={handleInputChange}
-          onFocus={() => setShowResults(true)}
         />
-        {isLoading && <div className="search-spinner"></div>}
+        <i className="fas fa-search search-icon"></i>
       </div>
-
       {showResults && results.length > 0 && (
         <div className="search-results">
-          {results.map((movie) => (
+          {results.map(movie => (
             <div
               key={movie.id}
               className="search-result-item"
-              onClick={() => handleMovieClick(movie.id)}
+              onClick={() => handleResultClick(movie.id)}
             >
-              <img
-                src={tmdbApi.getImageUrl(movie.poster_path, 'poster', 'small')}
-                alt={movie.title}
-                className="search-result-poster"
-                loading="lazy"
+              <img 
+                src={tmdbApi.getImageUrl(movie.poster_path, 'poster', 'small')} 
+                alt={movie.title} 
               />
               <div className="search-result-info">
                 <h4>{movie.title}</h4>
-                <p className="search-result-year">
-                  {new Date(movie.release_date).getFullYear()}
-                </p>
-                <p className="search-result-rating">
-                  <i className="fas fa-star"></i>
-                  {movie.vote_average.toFixed(1)}
-                </p>
+                <p>{new Date(movie.release_date).getFullYear()}</p>
               </div>
             </div>
           ))}
@@ -114,4 +91,4 @@ const SearchBar = () => {
   );
 };
 
-export default React.memo(SearchBar); 
+export default SearchBar; 
