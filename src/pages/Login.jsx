@@ -86,9 +86,6 @@ const Login = () => {
               <span className="checkmark"></span>
               Remember me
             </label>
-            <Link to="/forgot-password" className="forgot-password">
-              Forgot Password?
-            </Link>
           </div>
           
           <button 

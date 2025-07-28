@@ -36,7 +36,7 @@ const Hero = () => {
           <form className="contact-form" onSubmit={handleSubmit}>
             <h2>Get in Touch</h2>
             <div className="form-group">
-              <label htmlFor="name">Name</label>
+              <label htmlFor="name" style={{color: 'white'}}>Name</label>
               <input
                 type="text"
                 id="name"
@@ -49,7 +49,7 @@ const Hero = () => {
               />
             </div>
             <div className="form-group">
-              <label htmlFor="email">Email</label>
+              <label htmlFor="email" style={{color: 'white'}}>Email</label>
               <input
                 type="email"
                 id="email"
@@ -62,7 +62,7 @@ const Hero = () => {
               />
             </div>
             <div className="form-group">
-              <label htmlFor="message">Message</label>
+              <label htmlFor="message" style={{color: 'white'}}>Message</label>
               <textarea
                 id="message"
                 name="message"
