@@ -1,55 +1,91 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
+import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import TestimonialCard from './TestimonialCard';
 import './TestimonialsCarousel.css';
 
+// Sample testimonials data (replace with your actual data)
+const testimonials = [
+  {
+    id: 1,
+    name: "Sarah Johnson",
+    title: "Movie Enthusiast",
+    photo: "/images/testimonials/sarah.jpg",
+    text: "CineVerse has completely transformed how I discover movies. The personalized recommendations are spot-on, and I've found so many hidden gems I would have never discovered otherwise!"
+  },
+  {
+    id: 2,
+    name: "Michael Chen",
+    title: "Film Critic",
+    photo: "/images/testimonials/michael.jpg",
+    text: "As a film critic, I appreciate the depth of analysis and quality of reviews on CineVerse. The community discussions are engaging and insightful."
+  },
+  {
+    id: 3,
+    name: "Emma Rodriguez",
+    title: "Casual Viewer",
+    photo: "/images/testimonials/emma.jpg",
+    text: "I love how easy it is to find movies that match my mood. The interface is intuitive, and the recommendations are always relevant to my taste."
+  },
+  {
+    id: 4,
+    name: "David Kim",
+    title: "Movie Blogger",
+    photo: "/images/testimonials/david.jpg",
+    text: "The detailed movie analysis and behind-the-scenes content on CineVerse are invaluable for someone who loves to dive deep into filmmaking."
+  },
+  {
+    id: 5,
+    name: "Lisa Patel",
+    title: "Film Student",
+    photo: "/images/testimonials/lisa.jpg",
+    text: "CineVerse has been an amazing resource for my film studies. The community is knowledgeable and supportive, and the content is always high quality."
+  }
+];
+
 const TestimonialsCarousel = () => {
-  const testimonials = [
-    {
-      id: 1,
-      name: "Sarah Johnson",
-      role: "Movie Enthusiast",
-      content: "CineVerse helped me discover so many amazing films I never would have found otherwise. The recommendations are spot-on!",
-      rating: 5,
-      image: "/images/testimonials/sarah.jpg"
-    },
-    {
-      id: 2,
-      name: "Michael Chen",
-      role: "Film Student",
-      content: "As a film student, I need to watch a lot of movies. This platform makes it so easy to find quality content.",
-      rating: 5,
-      image: "/images/testimonials/michael.jpg"
-    },
-    {
-      id: 3,
-      name: "Emma Rodriguez",
-      role: "Casual Viewer",
-      content: "Perfect for someone like me who doesn't know what to watch. The search feature is incredibly helpful.",
-      rating: 4,
-      image: "/images/testimonials/emma.jpg"
-    },
-    {
-      id: 4,
-      name: "David Thompson",
-      role: "Movie Critic",
-      content: "The movie details and ratings are comprehensive. It's become my go-to platform for movie research.",
-      rating: 5,
-      image: "/images/testimonials/david.jpg"
-    }
-  ];
+  const carouselRef = useRef(null);
+  const [scrollPosition, setScrollPosition] = useState(0);
+
+  const scroll = (direction) => {
+    const container = carouselRef.current;
+    const scrollAmount = direction === 'left' ? -400 : 400;
+    const newPosition = scrollPosition + scrollAmount;
+
+    container.scrollTo({
+      left: newPosition,
+      behavior: 'smooth'
+    });
+
+    setScrollPosition(newPosition);
+  };
 
   return (
-    <div className="testimonials-section">
+    <section className="testimonials-section">
       <div className="testimonials-header">
         <h2>What Our Users Say</h2>
-        <p>Join thousands of satisfied movie lovers</p>
+        <div className="carousel-controls">
+          <button 
+            className="carousel-control" 
+            onClick={() => scroll('left')}
+            disabled={scrollPosition <= 0}
+          >
+            <FaChevronLeft />
+          </button>
+          <button 
+            className="carousel-control" 
+            onClick={() => scroll('right')}
+            disabled={scrollPosition >= carouselRef.current?.scrollWidth - carouselRef.current?.clientWidth}
+          >
+            <FaChevronRight />
+          </button>
+        </div>
       </div>
-      <div className="testimonials-carousel">
+      <div className="testimonials-carousel" ref={carouselRef}>
         {testimonials.map(testimonial => (
           <TestimonialCard key={testimonial.id} testimonial={testimonial} />
         ))}
       </div>
-    </div>
+    </section>
   );
 };
 

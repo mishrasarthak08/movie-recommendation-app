@@ -1,87 +1,168 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './Signup.css';
 
 const Signup = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    password: '',
+    confirmPassword: ''
+  });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (password !== confirmPassword) {
+    
+    if (formData.password !== formData.confirmPassword) {
       alert('Passwords do not match!');
       return;
     }
+    
     setIsLoading(true);
+    
+    // Simulate API call
     setTimeout(() => {
+      console.log('Signup form submitted:', formData);
       setIsLoading(false);
+      // Redirect to home page after successful signup
       navigate('/');
-    }, 1200);
+    }, 1000);
   };
 
   return (
     <div className="auth-page">
       <div className="auth-container">
-        <h2 className="auth-header">Sign Up for CineVerse</h2>
+        <div className="auth-header">
+          <h1>Create Account</h1>
+          <p>Join us and discover amazing movies</p>
+        </div>
+        
         <form className="auth-form" onSubmit={handleSubmit}>
           <div className="form-group">
-            <label>Email</label>
+            <label htmlFor="name">Full Name</label>
             <div className="input-wrapper">
+              <i className="fas fa-user input-icon"></i>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                placeholder="Enter your full name"
+                required
+              />
+            </div>
+          </div>
+          
+          <div className="form-group">
+            <label htmlFor="email">Email Address</label>
+            <div className="input-wrapper">
+              <i className="fas fa-envelope input-icon"></i>
               <input
                 type="email"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
+                id="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="Enter your email"
                 required
               />
-              <span className="input-icon"><i className="fas fa-envelope"></i></span>
             </div>
           </div>
+          
           <div className="form-group">
-            <label>Password</label>
+            <label htmlFor="password">Password</label>
             <div className="input-wrapper">
+              <i className="fas fa-lock input-icon"></i>
               <input
-                type={showPassword ? 'text' : 'password'}
-                value={password}
-                onChange={e => setPassword(e.target.value)}
+                type={showPassword ? "text" : "password"}
+                id="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                placeholder="Create a password"
                 required
               />
-              <span
-                className="input-icon password-toggle"
+              <button
+                type="button"
+                className="password-toggle"
                 onClick={() => setShowPassword(!showPassword)}
               >
-                <i className={showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'}></i>
-              </span>
+                <i className={`fas ${showPassword ? 'fa-eye-slash' : 'fa-eye'}`}></i>
+              </button>
             </div>
           </div>
+          
           <div className="form-group">
-            <label>Confirm Password</label>
+            <label htmlFor="confirmPassword">Confirm Password</label>
             <div className="input-wrapper">
+              <i className="fas fa-lock input-icon"></i>
               <input
-                type={showConfirmPassword ? 'text' : 'password'}
-                value={confirmPassword}
-                onChange={e => setConfirmPassword(e.target.value)}
+                type={showConfirmPassword ? "text" : "password"}
+                id="confirmPassword"
+                name="confirmPassword"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                placeholder="Confirm your password"
                 required
               />
-              <span
-                className="input-icon password-toggle"
+              <button
+                type="button"
+                className="password-toggle"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
               >
-                <i className={showConfirmPassword ? 'fas fa-eye-slash' : 'fas fa-eye'}></i>
-              </span>
+                <i className={`fas ${showConfirmPassword ? 'fa-eye-slash' : 'fa-eye'}`}></i>
+              </button>
             </div>
           </div>
-          <button className="auth-button" type="submit" disabled={isLoading}>
-            {isLoading ? <span className="loading-spinner"></span> : 'Sign Up'}
+          
+          <div className="form-options">
+            <label className="checkbox-wrapper">
+              <input type="checkbox" required />
+              <span className="checkmark"></span>
+              I agree to the{' '}
+              <Link to="/terms" className="auth-link">
+                Terms of Service
+              </Link>{' '}
+              and{' '}
+              <Link to="/privacy" className="auth-link">
+                Privacy Policy
+              </Link>
+            </label>
+          </div>
+          
+          <button 
+            type="submit" 
+            className="auth-button"
+            disabled={isLoading}
+          >
+            {isLoading ? (
+              <span className="loading-spinner"></span>
+            ) : (
+              'Create Account'
+            )}
           </button>
         </form>
+        
         <div className="auth-footer">
-          <span>Already have an account?</span>
-          <a href="/login" className="auth-link">Login</a>
+          <p>
+            Already have an account?{' '}
+            <Link to="/login" className="auth-link">
+              Sign in here
+            </Link>
+          </p>
         </div>
       </div>
     </div>

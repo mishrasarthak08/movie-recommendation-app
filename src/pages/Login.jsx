@@ -1,72 +1,113 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './Login.css';
 
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [formData, setFormData] = useState({
+    email: '',
+    password: ''
+  });
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+    
+    // Simulate API call
     setTimeout(() => {
+      console.log('Login form submitted:', formData);
       setIsLoading(false);
+      // Redirect to home page after successful login
       navigate('/');
-    }, 1200);
+    }, 1000);
   };
 
   return (
     <div className="auth-page">
       <div className="auth-container">
-        <h2 className="auth-header">Login to CineVerse</h2>
+        <div className="auth-header">
+          <h1>Welcome Back</h1>
+          <p>Sign in to your account to continue</p>
+        </div>
+        
         <form className="auth-form" onSubmit={handleSubmit}>
           <div className="form-group">
-            <label>Email</label>
+            <label htmlFor="email">Email Address</label>
             <div className="input-wrapper">
+              <i className="fas fa-envelope input-icon"></i>
               <input
                 type="email"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
+                id="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="Enter your email"
                 required
               />
-              <span className="input-icon"><i className="fas fa-envelope"></i></span>
             </div>
           </div>
+          
           <div className="form-group">
-            <label>Password</label>
+            <label htmlFor="password">Password</label>
             <div className="input-wrapper">
+              <i className="fas fa-lock input-icon"></i>
               <input
-                type={showPassword ? 'text' : 'password'}
-                value={password}
-                onChange={e => setPassword(e.target.value)}
+                type={showPassword ? "text" : "password"}
+                id="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                placeholder="Enter your password"
                 required
               />
-              <span
-                className="input-icon password-toggle"
+              <button
+                type="button"
+                className="password-toggle"
                 onClick={() => setShowPassword(!showPassword)}
               >
-                <i className={showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'}></i>
-              </span>
+                <i className={`fas ${showPassword ? 'fa-eye-slash' : 'fa-eye'}`}></i>
+              </button>
             </div>
           </div>
+          
           <div className="form-options">
-            <div className="checkbox-wrapper">
-              <input type="checkbox" id="remember" />
-              <label htmlFor="remember">Remember me</label>
+            <label className="checkbox-wrapper">
+              <input type="checkbox" />
               <span className="checkmark"></span>
-            </div>
-            <a href="#" className="forgot-password">Forgot Password?</a>
+              Remember me
+            </label>
           </div>
-          <button className="auth-button" type="submit" disabled={isLoading}>
-            {isLoading ? <span className="loading-spinner"></span> : 'Login'}
+          
+          <button 
+            type="submit" 
+            className="auth-button"
+            disabled={isLoading}
+          >
+            {isLoading ? (
+              <span className="loading-spinner"></span>
+            ) : (
+              'Sign In'
+            )}
           </button>
         </form>
+        
         <div className="auth-footer">
-          <span>Don't have an account?</span>
-          <a href="/signup" className="auth-link">Sign Up</a>
+          <p>
+            Don't have an account?{' '}
+            <Link to="/signup" className="auth-link">
+              Sign up here
+            </Link>
+          </p>
         </div>
       </div>
     </div>

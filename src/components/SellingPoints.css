@@ -1,0 +1,170 @@
+.selling-points {
+  width: 100%;
+  max-width: 100vw;
+  margin: 0;
+  padding: 4rem 2rem;
+  background-color: #f8f9fa;
+  box-sizing: border-box;
+}
+
+.selling-points-grid {
+  width: 100%;
+  max-width: 100vw;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 3rem;
+  box-sizing: border-box;
+}
+
+.selling-point {
+  width: 100%;
+  max-width: 100vw;
+  margin: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+  padding: 4rem 0;
+  box-sizing: border-box;
+}
+
+.selling-point:first-child {
+  padding-top: 0;
+}
+
+.selling-point:last-child {
+  padding-bottom: 0;
+}
+
+.selling-point.reverse {
+  direction: rtl;
+}
+
+.selling-point.reverse .selling-point-content {
+  direction: ltr;
+}
+
+.selling-point-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.selling-point-content h2 {
+  font-size: 2.5rem;
+  color: #333;
+  margin: 0;
+  line-height: 1.2;
+  font-weight: 700;
+}
+
+.selling-point-content p {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: #666;
+  margin: 0;
+}
+
+.feature-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.feature-list li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+  color: #555;
+}
+
+.feature-list li::before {
+  content: "✓";
+  color: #007bff;
+  font-weight: bold;
+}
+
+.selling-point-image {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  aspect-ratio: 4/3;
+}
+
+.selling-point-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.selling-point-image:hover img {
+  transform: scale(1.05);
+}
+
+/* Responsive Design */
+@media screen and (max-width: 1024px) {
+  .selling-point {
+    gap: 3rem;
+    padding: 3rem 0;
+  }
+
+  .selling-point-content h2 {
+    font-size: 2rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .selling-points {
+    padding: 4rem 1.5rem;
+  }
+
+  .selling-point {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    padding: 3rem 0;
+  }
+
+  .selling-point.reverse {
+    direction: ltr;
+  }
+
+  .selling-point-content {
+    text-align: center;
+  }
+
+  .feature-list {
+    grid-template-columns: 1fr;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+
+  .selling-point-image {
+    order: -1;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .selling-points {
+    padding: 3rem 1rem;
+  }
+
+  .selling-point {
+    padding: 2rem 0;
+  }
+
+  .selling-point-content h2 {
+    font-size: 1.75rem;
+  }
+
+  .selling-point-content p {
+    font-size: 1rem;
+  }
+} 

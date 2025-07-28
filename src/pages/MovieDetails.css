@@ -243,6 +243,7 @@
   padding: 0;
 }
 
+/* Large Desktop */
 @media screen and (min-width: 1200px) {
   .movie-info {
     max-width: 1200px;
@@ -258,6 +259,7 @@
   }
 }
 
+/* Desktop */
 @media screen and (max-width: 1199px) and (min-width: 1025px) {
   .movie-info {
     max-width: 1000px;
@@ -269,6 +271,7 @@
   }
 }
 
+/* Tablet Landscape */
 @media screen and (max-width: 1024px) {
   .backdrop-overlay {
     padding: 3rem 1.5rem 2rem 1.5rem;
@@ -307,6 +310,7 @@
   }
 }
 
+/* Tablet Portrait */
 @media screen and (max-width: 768px) {
   .backdrop-overlay {
     padding: 2rem 1rem 1.5rem 1rem;
@@ -364,6 +368,7 @@
   }
 }
 
+/* Mobile Large */
 @media screen and (max-width: 600px) {
   .backdrop-overlay {
     padding: 1.5rem 0.75rem 1rem 0.75rem;
@@ -427,6 +432,7 @@
   }
 }
 
+/* Mobile Small */
 @media screen and (max-width: 480px) {
   .backdrop-overlay {
     padding: 1rem 0.5rem 0.75rem 0.5rem;
@@ -487,6 +493,7 @@
   }
 }
 
+/* Extra Small Mobile */
 @media screen and (max-width: 360px) {
   .movie-poster img {
     width: 100px;

@@ -98,14 +98,16 @@
   background-color: #1a1a1a;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 .movie-poster img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.3s ease;
-  will-change: transform;
+  transition: opacity 0.3s ease;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 .movie-poster-skeleton {
@@ -116,12 +118,14 @@
   height: 100%;
   background: linear-gradient(
     90deg,
-    #2a2a2a 0%,
-    #3a3a3a 50%,
-    #2a2a2a 100%
+    #1a1a1a 0%,
+    #2a2a2a 50%,
+    #1a1a1a 100%
   );
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 .skeleton .movie-poster-skeleton {
@@ -129,11 +133,12 @@
 }
 
 .skeleton .movie-overlay {
-  display: none;
+  opacity: 1;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
 }
 
 .skeleton-text {
-  height: 1rem;
+  height: 12px;
   background: linear-gradient(
     90deg,
     #2a2a2a 0%,
@@ -143,7 +148,7 @@
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
   border-radius: 4px;
-  margin-bottom: 0.5rem;
+  margin-bottom: 8px;
 }
 
 @keyframes shimmer {
@@ -157,23 +162,16 @@
 
 .movie-overlay {
   position: absolute;
-  top: 0;
+  bottom: 0;
   left: 0;
   right: 0;
-  bottom: 0;
-  background: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0.1) 0%,
-    rgba(0, 0, 0, 0.7) 50%,
-    rgba(0, 0, 0, 0.9) 100%
-  );
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  padding: 1rem;
+  padding: clamp(0.5rem, 2vw, 1rem);
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
+  color: white;
   opacity: 0;
   transition: opacity 0.3s ease;
-  color: white;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 .movie-card:hover .movie-overlay {
@@ -181,63 +179,57 @@
 }
 
 .movie-overlay h3 {
-  margin: 0 0 0.5rem 0;
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: white;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-  line-height: 1.3;
+  margin: 0 0 0.5rem;
+  font-size: clamp(0.875rem, 2vw, 1rem);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .movie-rating {
-  margin: 0 0 0.25rem 0;
-  font-size: 0.8rem;
-  color: #ffc107;
-  font-weight: 600;
   display: flex;
   align-items: center;
-  gap: 0.3rem;
+  gap: 0.25rem;
+  margin: 0;
+  font-size: clamp(0.75rem, 1.5vw, 0.9rem);
 }
 
 .movie-rating i {
-  font-size: 0.7rem;
+  color: #ffc107;
 }
 
 .movie-year {
-  margin: 0;
-  font-size: 0.75rem;
-  color: rgba(255, 255, 255, 0.8);
-  font-weight: 500;
+  margin: 0.25rem 0 0;
+  font-size: clamp(0.75rem, 1.5vw, 0.9rem);
+  color: #b3b3b3;
 }
 
 .carousel-loading {
   display: flex;
-  align-items: center;
   justify-content: center;
-  min-height: 200px;
-  color: white;
-  font-size: 1.1rem;
+  align-items: center;
+  min-height: clamp(300px, 50vw, 400px);
+  padding: 2rem;
 }
 
 .loading-spinner {
-  border: 3px solid rgba(255, 255, 255, 0.3);
-  border-top: 3px solid white;
+  width: clamp(32px, 5vw, 40px);
+  height: clamp(32px, 5vw, 40px);
+  border: 4px solid rgba(255, 255, 255, 0.1);
+  border-left-color: #007bff;
   border-radius: 50%;
-  width: 24px;
-  height: 24px;
   animation: spin 1s linear infinite;
-  margin-right: 0.5rem;
 }
 
 .carousel-error {
+  color: #dc3545;
+  text-align: center;
+  padding: 2rem;
+  min-height: clamp(300px, 50vw, 400px);
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 200px;
-  color: #ff6b6b;
-  font-size: 1.1rem;
-  text-align: center;
-  padding: 1rem;
+  font-size: clamp(0.875rem, 2vw, 1rem);
 }
 
 @keyframes spin {
@@ -245,11 +237,11 @@
   100% { transform: rotate(360deg); }
 }
 
+/* Responsive Design */
 @media screen and (max-width: 1024px) {
   .carousel-header,
   .movie-carousel {
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
+    padding: 0 1.5rem;
   }
 }
 
@@ -260,12 +252,10 @@
 
   .carousel-header {
     padding: 0 1rem;
-    margin-bottom: 1rem;
   }
 
   .movie-carousel {
-    padding: 1rem 0;
-    gap: 0.75rem;
+    padding: 0 1rem;
     scroll-padding: 0 1rem;
   }
 }
@@ -276,20 +266,20 @@
   }
 
   .carousel-header {
-    padding: 0 0.5rem;
+    padding: 0 0.75rem;
   }
 
   .movie-carousel {
-    padding: 0.5rem 0;
-    gap: 0.5rem;
-    scroll-padding: 0 0.5rem;
+    padding: 0 0.75rem;
+    scroll-padding: 0 0.75rem;
   }
 }
 
+/* Touch Device Optimizations */
 @media (hover: none) {
   .movie-overlay {
     opacity: 1;
-    background: rgba(0, 0, 0, 0.8);
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.4));
   }
 
   .movie-card:hover {
@@ -297,14 +287,13 @@
   }
 
   .carousel-control:hover:not(:disabled) {
-    background: rgba(255, 255, 255, 0.1);
     transform: none;
   }
 }
 
+/* High-DPI Screen Optimizations */
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
   .movie-poster img {
     image-rendering: -webkit-optimize-contrast;
-    image-rendering: crisp-edges;
   }
 } 
