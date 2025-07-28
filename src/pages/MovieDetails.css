@@ -16,6 +16,7 @@
   background-position: center;
   background-repeat: no-repeat;
   filter: blur(0px);
+  width: 100%;
 }
 
 .movie-backdrop::before {
@@ -36,6 +37,8 @@
   justify-content: center;
   padding: 4rem 2rem 2rem 2rem;
   background: linear-gradient(90deg, rgba(20,20,20,0.95) 60%, rgba(20,20,20,0.7) 100%);
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .movie-info {
@@ -64,6 +67,8 @@
   border-radius: 14px;
   box-shadow: 0 6px 24px rgba(0,0,0,0.35);
   background: #222;
+  max-width: 100%;
+  height: auto;
 }
 
 .movie-content {
@@ -80,6 +85,8 @@
   color: #fff;
   font-weight: 700;
   letter-spacing: -1px;
+  line-height: 1.2;
+  word-wrap: break-word;
 }
 
 .movie-meta {
@@ -88,6 +95,8 @@
   color: #b3b3b3;
   font-size: 1.15rem;
   margin-bottom: 0.5rem;
+  flex-wrap: wrap;
+  align-items: center;
 }
 
 .movie-rating {
@@ -121,6 +130,7 @@
   line-height: 1.7;
   color: #e0e0e0;
   margin-bottom: 1.2rem;
+  word-wrap: break-word;
 }
 
 .section-divider {
@@ -148,6 +158,7 @@
   padding-bottom: 0.5rem;
   scrollbar-width: thin;
   scrollbar-color: #444 #222;
+  -webkit-overflow-scrolling: touch;
 }
 
 .cast-member {
@@ -161,6 +172,7 @@
   border-radius: 10px;
   padding: 0.7rem 0.5rem 0.5rem 0.5rem;
   box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  flex-shrink: 0;
 }
 
 .cast-member img {
@@ -176,12 +188,16 @@
   font-size: 0.93rem;
   color: #e0e0e0;
   font-weight: 500;
+  word-wrap: break-word;
+  max-width: 100%;
 }
 
 .cast-member .character {
   color: #b3b3b3;
   font-size: 0.82rem;
   font-weight: 400;
+  word-wrap: break-word;
+  max-width: 100%;
 }
 
 .movie-trailer {
@@ -222,65 +238,294 @@
   font-size: 1.5rem;
   color: white;
   background-color: #141414;
+  width: 100vw;
+  margin: 0;
+  padding: 0;
 }
 
+/* Large Desktop */
+@media screen and (min-width: 1200px) {
+  .movie-info {
+    max-width: 1200px;
+    padding: 3rem 2.5rem;
+  }
+  
+  .movie-content h1 {
+    font-size: 3rem;
+  }
+  
+  .movie-poster img {
+    width: 280px;
+  }
+}
+
+/* Desktop */
+@media screen and (max-width: 1199px) and (min-width: 1025px) {
+  .movie-info {
+    max-width: 1000px;
+    padding: 2.5rem 2rem;
+  }
+  
+  .movie-content h1 {
+    font-size: 2.5rem;
+  }
+}
+
+/* Tablet Landscape */
 @media screen and (max-width: 1024px) {
+  .backdrop-overlay {
+    padding: 3rem 1.5rem 2rem 1.5rem;
+  }
+  
   .movie-info {
     flex-direction: column;
     align-items: center;
-    padding: 2rem 1rem;
+    padding: 2rem 1.5rem;
+    gap: 2rem;
+    max-width: 800px;
   }
+  
+  .movie-poster {
+    flex: none;
+  }
+  
   .movie-poster img {
-    width: 180px;
+    width: 200px;
   }
+  
+  .movie-content {
+    text-align: center;
+  }
+  
   .movie-content h1 {
-    font-size: 2rem;
+    font-size: 2.2rem;
+  }
+  
+  .movie-meta {
+    justify-content: center;
+  }
+  
+  .movie-genres {
+    justify-content: center;
   }
 }
 
+/* Tablet Portrait */
 @media screen and (max-width: 768px) {
   .backdrop-overlay {
-    padding: 1.5rem 0.5rem;
+    padding: 2rem 1rem 1.5rem 1rem;
   }
+  
   .movie-info {
-    padding: 1.2rem 0.5rem;
-    gap: 1.2rem;
+    padding: 1.5rem 1rem;
+    gap: 1.5rem;
+    border-radius: 12px;
   }
+  
   .movie-poster img {
-    width: 120px;
+    width: 160px;
   }
+  
   .movie-content h1 {
-    font-size: 1.3rem;
+    font-size: 1.8rem;
   }
+  
   .movie-meta {
-    font-size: 0.98rem;
+    font-size: 1rem;
+    gap: 1rem;
   }
+  
+  .movie-overview {
+    font-size: 1rem;
+  }
+  
+  .cast-list {
+    gap: 1rem;
+  }
+  
   .cast-member {
-    min-width: 90px;
-    max-width: 100px;
-    padding: 0.5rem 0.2rem 0.3rem 0.2rem;
+    min-width: 100px;
+    max-width: 110px;
+    padding: 0.6rem 0.4rem 0.4rem 0.4rem;
   }
+  
   .cast-member img {
-    width: 60px;
-    height: 85px;
+    width: 70px;
+    height: 95px;
+  }
+  
+  .cast-member span {
+    font-size: 0.85rem;
+  }
+  
+  .cast-member .character {
+    font-size: 0.75rem;
+  }
+  
+  .movie-cast h3,
+  .movie-trailer h3 {
+    font-size: 1.2rem;
   }
 }
 
-@media screen and (max-width: 480px) {
-  .movie-content h1 {
-    font-size: 1.1rem;
+/* Mobile Large */
+@media screen and (max-width: 600px) {
+  .backdrop-overlay {
+    padding: 1.5rem 0.75rem 1rem 0.75rem;
   }
+  
+  .movie-info {
+    padding: 1.2rem 0.75rem;
+    gap: 1.2rem;
+    border-radius: 10px;
+  }
+  
+  .movie-poster img {
+    width: 140px;
+  }
+  
+  .movie-content h1 {
+    font-size: 1.5rem;
+  }
+  
   .movie-meta {
     flex-direction: column;
     gap: 0.5rem;
+    font-size: 0.9rem;
   }
+  
+  .movie-genres {
+    gap: 0.5rem;
+  }
+  
+  .genre-tag {
+    padding: 0.3rem 0.8rem;
+    font-size: 0.85rem;
+  }
+  
+  .movie-overview {
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+  
+  .cast-list {
+    gap: 0.8rem;
+  }
+  
+  .cast-member {
+    min-width: 85px;
+    max-width: 95px;
+    padding: 0.5rem 0.3rem 0.3rem 0.3rem;
+  }
+  
+  .cast-member img {
+    width: 60px;
+    height: 80px;
+  }
+  
+  .cast-member span {
+    font-size: 0.8rem;
+  }
+  
+  .cast-member .character {
+    font-size: 0.7rem;
+  }
+}
+
+/* Mobile Small */
+@media screen and (max-width: 480px) {
+  .backdrop-overlay {
+    padding: 1rem 0.5rem 0.75rem 0.5rem;
+  }
+  
+  .movie-info {
+    padding: 1rem 0.5rem;
+    gap: 1rem;
+    border-radius: 8px;
+  }
+  
+  .movie-poster img {
+    width: 120px;
+  }
+  
+  .movie-content h1 {
+    font-size: 1.3rem;
+  }
+  
+  .movie-meta {
+    font-size: 0.85rem;
+  }
+  
+  .movie-overview {
+    font-size: 0.9rem;
+  }
+  
+  .cast-list {
+    gap: 0.6rem;
+  }
+  
   .cast-member {
     min-width: 70px;
     max-width: 80px;
-    padding: 0.3rem 0.1rem 0.2rem 0.1rem;
+    padding: 0.4rem 0.2rem 0.2rem 0.2rem;
   }
+  
+  .cast-member img {
+    width: 50px;
+    height: 70px;
+  }
+  
+  .cast-member span {
+    font-size: 0.75rem;
+  }
+  
+  .cast-member .character {
+    font-size: 0.65rem;
+  }
+  
+  .movie-cast h3,
+  .movie-trailer h3 {
+    font-size: 1.1rem;
+  }
+  
+  .section-divider {
+    margin: 1.5rem 0 1rem 0;
+  }
+}
+
+/* Extra Small Mobile */
+@media screen and (max-width: 360px) {
+  .movie-poster img {
+    width: 100px;
+  }
+  
+  .movie-content h1 {
+    font-size: 1.1rem;
+  }
+  
+  .movie-meta {
+    font-size: 0.8rem;
+  }
+  
+  .movie-overview {
+    font-size: 0.85rem;
+  }
+  
+  .cast-member {
+    min-width: 60px;
+    max-width: 70px;
+  }
+  
   .cast-member img {
     width: 40px;
     height: 60px;
+  }
+  
+  .cast-member span {
+    font-size: 0.7rem;
+  }
+  
+  .cast-member .character {
+    font-size: 0.6rem;
   }
 } 

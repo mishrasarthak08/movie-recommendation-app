@@ -24,3 +24,10 @@ main {
   margin: 0;
   overflow-x: hidden;
 }
+
+/* Override for MovieDetails page to remove main padding */
+main .movie-details {
+  margin: -20px;
+  width: calc(100% + 40px);
+  max-width: none;
+}
